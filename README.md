@@ -1,2 +1,2 @@
 # ml_serve
-Serving APi for FLNT ML models.
+Serving API for FLNT ML models.
