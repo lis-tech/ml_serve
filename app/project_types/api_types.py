@@ -1,13 +1,14 @@
 from pydantic import BaseModel, BaseSettings
 from pydantic.generics import GenericModel
 from typing import Generic, TypeVar, List
-from enum import Enum
+
+from project_types.common_types import (
+    ModelBaseLibraryType,
+    ModelStatusType,
+    ModelTaskType,
+)
 
 _ResultT = TypeVar("_ResultT")
-
-
-class Settings(BaseSettings):
-    api_port: int
 
 
 class TextClassificationRequest(BaseModel):
@@ -44,22 +45,6 @@ class TextClassificationLabel(BaseModel):
 
 TextClassificationResult = List[TextSequenceLabel]
 TextClassificationResponse = PredictionResponse[TextClassificationResult]
-
-
-class ModelTaskType(Enum):
-    TEXT_CLASSIFICATION = "text_classification"
-    TEXT_SEQUENCE_LABELLING = "text_sequence_labelling"
-
-
-class ModelStatusType(Enum):
-    AVAILABLE = "available"
-    UNAVAILABLE = "unavailable"
-
-
-class ModelBaseLibraryType(Enum):
-    PYTORCH = "pytorch"
-    SCIKIT_LEARN = "scikit_learn"
-    TENSORFLOW = "tensorflow"
 
 
 class ModelSummary(BaseModel):

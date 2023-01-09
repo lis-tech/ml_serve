@@ -1,13 +1,15 @@
+import sys
+from pathlib import Path
+from functools import cache
+import logging
+
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from functools import cache
 import dotenv
 import uvicorn
 import pandas as pd
 
-from models import (
-    Settings,
+from project_types.api_types import (
     TextSequenceLabellingResponse,
     TextSequenceLabellingRequest,
     TextClassificationRequest,
@@ -15,12 +17,19 @@ from models import (
     ListModelsResponse,
     GetModelResponse,
     ModelSummary,
+)
+from project_types.common_types import (
+    Settings,
     ModelTaskType,
     ModelStatusType,
     ModelBaseLibraryType,
 )
 
 dotenv.load_dotenv()
+
+logging.basicConfig(
+    style="{", format="{levelname}\t{asctime}\t{msg}", datefmt="%Y-%m-%dT%H:%M:%S%z"
+)
 
 app = FastAPI(
     title="ML Serving API",
@@ -98,7 +107,7 @@ def delete_registered_model(model_id: str, settings: Settings = Depends(get_sett
 
 def main():
     settings = get_settings()
-    uvicorn.run(app, port=settings.api_port)
+    uvicorn.run(app, host="0.0.0.0", port=settings.api_port)
 
 
 if __name__ == "__main__":
